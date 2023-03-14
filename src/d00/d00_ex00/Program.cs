@@ -12,9 +12,8 @@ var i = rate / 12.0 / 100.0;
 var p = Math.Pow((1+i), term);
 var payment = (sum * i * p) / (p-1);
 
-var currentDate = DateTime.Today;
-// var currentDate = new DateTime(2021, 5, 1);
-// var currentDate = new DateTime(2021, 5, 1);
+// var currentDate = DateTime.Today;
+var currentDate = new DateTime(2021, 5, 1);
 var debt = sum;
 
 for (var countMonths = 1; countMonths <= term; countMonths++)

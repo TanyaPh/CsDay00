@@ -32,52 +32,50 @@ int LevDist(string word1, string word2)
 Console.Write(">Enter name: ");
 var name = Console.ReadLine();
 
-if (name.Trim() == string.Empty)
+if (name == null || name.Trim() == string.Empty)
 {
     Console.Write("Your name was not found.");
     return;
 }
 
-if (!File.Exists("/Users/gabriela/Downloads/us.txt"))
+if (!File.Exists("../../../materials/us.txt"))
 {
     Console.Write("File not found");
 }
 else
 {
-    using (var text = File.OpenText("/Users/gabriela/Downloads/us.txt"))
+    using var text = File.OpenText("../../../materials/us.txt");
+    string? str;
+    var variants = new List<string>();
+    while ((str = text.ReadLine()) != null)
     {
-        string str;
-        var variants = new List<string>();
-        while ((str = text.ReadLine()) != null)
+        var res = LevDist(name.Trim(), str);
+        switch (res)
         {
-            var res = LevDist(name.Trim(), str);
-            switch (res)
-            {
-                case 0:
-                    Console.WriteLine($"Hello, {name}!");
-                    return;
-                case < 2:
-                    variants.Add(str);
-                    break;
-            }
+            case 0:
+                Console.WriteLine($"Hello, {name}!");
+                return;
+            case < 2:
+                variants.Add(str);
+                break;
         }
-        while (variants.Count != 0)
-        {
-            Console.WriteLine($">Did you mean “{variants[0]}”? Y/N");
-            var answer = Console.ReadLine();
-            switch (answer)
-            {
-                case "Y":
-                    Console.WriteLine($"Hello, {variants[0]}!");
-                    return;
-                case "N":
-                    variants.RemoveAt(0);
-                    break;
-                default:
-                    Console.WriteLine("Something went wrong. Check your input and retry.");
-                    return;
-            }
-        }
-        Console.WriteLine("Your name was not found.");
     }
+    while (variants.Count != 0)
+    {
+        Console.WriteLine($">Did you mean “{variants[0]}”? Y/N");
+        var answer = Console.ReadLine();
+        switch (answer)
+        {
+            case "Y":
+                Console.WriteLine($"Hello, {variants[0]}!");
+                return;
+            case "N":
+                variants.RemoveAt(0);
+                break;
+            default:
+                Console.WriteLine("Something went wrong. Check your input and retry.");
+                return;
+        }
+    }
+    Console.WriteLine("Your name was not found.");
 }
